@@ -1,0 +1,1059 @@
+windbg ANSI Command Tree 1.0
+
+title {"Common Commands"}
+
+body
+
+{"Common Commands - MS Internal/MS Confidential version 0.01 alpha - DO NOT SHARE - Feedback: mailto:YongRhee"}
+
+ {""}
+  {""} {""}
+
+ {"Frequently Used Commands"}
+  {"Reload initial libraries"} {".reload"}
+  {"Load SOS library for .Net 4.0"} {".loadby sos clr"}
+  {"Load threads special"} {"!threads -special"}
+  {"Load MEX library"} {".load C:\DbgHelpers\amd64\mex"}
+  {"List current web requests"} {"!AspxPagesExt"}
+  {"Dump all exceptions"} {"!dae"}
+  {"View AspNet counters"} {"!AspxCounters"}
+  {"View Clr performance counters"} {"!clrperf"}
+  {"View SQL Client performance counters"} {"!SqlClientPerfCounters"}
+  {"View WCF performance counters"} {"!WcfPerfCounters"}
+  {"Find the MT of System.Data.SqlClient.SqlInternalConnectionTds"} {"!DumpHeap -type System.Data.SqlClient.SqlInternalConnectionTds -stat"}
+  {"Get SQL TDS content using MT value"} {"$$><C:\DbgHelpers\dump_all_sql_connections.txt"}
+
+ {"Logging"}
+  {"Opens the debugger help. [Text] is the topic to lookup in the index. Example: .hh !pte"} {".echo .hh [Text]"}
+  {"Open Log"} {".logopen /t /u /d"}
+  {"Track your time, when you started to debug"} {".echotime"}
+  {"Enable Unicode"} {".enable_unicode 1"}
+  {"Enable DML-enhanced commands"} {".prefer_dml 1"}
+  {"Supresses the error: "Page 2a49 not present in the dump file. Type ".hh dbgerr004" for details""} {".ignore_missing_pages 1"}
+  {"Enable the error: "Page 2a49 not present in the dump file. Type ".hh dbgerr004" for details""} {".ignore_missing_pages 0"}
+  {"Disable DML-enhanced commands"} {".prefer_dml 0"}
+  {"Disable Unicode"} {".enable_unicode 0"}
+  {"Close Log"} {".logclose"}
+
+ {"Source"}
+  {"Current source code path"} {".srcpath"}
+  {"Set MS internal source code path"} {".srcpath srv*"}
+  {"List current frame source"} {"lsa @$scopeip"}
+  {"Disable source line support"} {".lines -d"}
+  {"Enable source line support"} {".lines -e"}
+
+ {"Symbols"}
+  {"Noisy Symbol Load"} {"!sym noisy"}
+  {"Quiet Symbol Load"} {"!sym quiet"}
+  {"Current Symbol Path"} {".sympath"}
+  {"Fix Symbols"} {".symfix"}
+  {"Set MSFT Public symbols"} {".sympath d:\websymbols;srv*d:\websymbols*http://msdl.microsoft.com/download/symbols"}
+  {"Set MSFT Internal Symbols"} {".sympath d:\symbols;srv*d:\symbols*http://symweb"}
+  {"Set Third party Symbols"} {".sympath+ srv*d:\Citrix_pub_symbols*http://ctxsym.citrix.com/symbols;srv*d:\Citrix_pub_symbols*http://66.165.176.159/symbols;srv*d:\Google_Chrome_pub_symbols*http://build.chromium.org/buildbot/symsrv;srv*d:\Rhino3d_pub_symbols*http://symbols.rhino3d.com;srv*d:\Cincom_Smalltalk_pub_symbols*http://www.cincomsmalltalk.com/downloads/symbols;srv*d:\ESRI_ArcGIS_pub_symbols*http://downloads2.esri.com/Support/symbols;srv*d:\Apple_Safari_pub_symbols*http://developer.apple.com/internet/safari/windows_symbols;srv*d:\OpenAFS_pub_symbols*http://www.secure-endpoints.com/symbols;srv*d:\Mozilla_Firefox_pub_symbols*http://symbols.mozilla.org/firefox;srv*d:\Mozilla_TryServer_pub_symbols*http://build.mozilla.org/tryserver-symbols;srv*d:\Mozilla_XulRunner_pub_symbols*http://symbols.mozilla.org/xulrunner;srv*d:\Mozilla_Thunderbird_pub_symbols*http://symbols.mozilla.org/thunderbird;srv*d:\SymbolSource_pub_symbols*http://srv.symbolsource.org/pdb/Public;http://srv.symbolsource.org/pdb/MyGet;srv*d:\Autodesk_CAD_pub_symbols*http://symbols.autodesk.com;srv*d:\Adobe_pub_symbols*http://bugs.adobe.com/jira/browse/FP-3953"}
+  {"Reload Symbols"} {".reload"}
+  {"Reload User Mode Symbols - Kernel"} {".reload /user"}
+  {"Reload Symbols, overwrite corrupt symbols"} {".reload /f /o"}
+
+ {"Debugger Extension"}
+  {"List the debugger extensions loaded"} {".chain"}
+  {"Load the debugger extensions"} {".echo .load <d:\debuggers\winxp\<extensionModuleName.ext>"}
+  {"Unload the debugger extensions"} {".echo .unload <d:\debuggers\winxp\<extensionModuleName.ext>"}
+  {"Debugger extension command match (replace <handle> with the debugger command)"} {".extmatch handle"}
+
+ {"Setting up for "Managed code" debugging"}
+  {"Check CLR version (.Net Framework 4.0 and newer) "} {"!eeversion"}
+  {"Set for .Net Framework 1.0/1.1 debugging"} {".loadby sos"}
+  {"Set for .Net Framework 2.0/3.0/3.5 debugging"} {".loadby sos mscorwks"}
+  {"Set for .Net Framework 4.0/4.5/4.5.1/4.5.2 debugging"} {".loadby sos clr"}
+  {"Trying .Net Framework debugging"} {".cordll -ve -u -l"}
+  {"List the module for mscorwks (.Net 2.0/3.0/3.5)"} {"lmvm mscorwks"}
+  {"List the module for clr (.Net 4.0/4.5.1/4.5.2)"} {"lmvm clr"}
+  {"Reload the module for mscorwks (.Net 2.0/3.0/3.5)"} {".reload /f mscorwks.dll"}
+  {"Reload the module for clr (.Net 4.0/4.5.1/4.5.2)"} {".reload /f clr.dll"}
+  {"List the debugger extensions"} {".chain"}
+
+ {"Information"}
+  {"Versions and locations"} {"version"}
+  {"Computer Name"} {"!envvar COMPUTERNAME"}
+  {"Computer name"} {"dS srv!srvcomputername"}
+  {"display general information about the current debug session"} {"!WinDE.info"}
+  {"Process being debugged - User"} {"|"}
+  {"Dump Location"} {"||"}
+  {"Target version"} {"vertarget"}
+  {"Time of dump"} {".time"}
+  {"Shows the debug session time using the timezone offset of #. Ex: .time -h 0 shows when a dump was taken in UTC"} {".time -h #"}
+  {"Machine info- Kernel"} {"!sysinfo machineid"}
+  {"CPU Info- Kernel"} {"!sysinfo cpuinfo"}
+  {"CPU Microcode - Kernel"} {"!sysinfo cpumicrocode"}
+  {"Process Environment Block"} {"!peb"}
+  {"Thread Environment Block"} {"!teb"}
+  {"Create server on port 9999"} {".server tcp:port=9999"}
+  {"Show remote connections"} {".clients"}
+
+ {"Automated Task"}
+  {"!analyze verbose"} {"!analyze -v"}
+  {"!analyze hang"} {"!analyze -hang"}
+  {"!analyze show bug check code"} {".echo !analyze -show [Bug check code]"}
+
+ {"Error"}
+  {"Displays the most recent exception or event that occurred"} {".lastevent"}
+  {"Dump last error for current thread"} {"!gle"}
+  {"Dump last error for all threads"} {"!gle -all"}
+  {"Err.exe"} {".echo !error <error code>"}
+
+ {"Calculations"}
+  {"Do basic hex arithmetic"} {".echo .formats 0x<value>"}
+  {"Do basic dec arithmetic"} {".echo .formats 0n<value>"}
+  {"Gets the size of a structure, it's easier than counting"} {"??sizeof(structure)"}
+  {"Dump structs using C++ style expressions. Ex: ??((nt!_KTHREAD*)(0xfffffa800ea43bb0))->ApcState"} {"??"}
+
+ {"Modules"}
+  {"List modules i.e. drivers !drivers"} {"lm n t"}
+  {"List of loaded and unloaded modules"} {"lmv"}
+  {"List of loaded and unloaded modules"} {"!dlls"}
+  {"Import table"} {"!dh <base address from lmv m <module name>>"}
+  {"Shortcut for !chkimg against all modules"} {"!mex.chkall"}
+  {"Compares the process' loaded module list with a scan of memory and displays any differences"} {"!mex.diffimg"}
+  {"An implementation of !for_each_module that supports filtering"} {"!mex.foreachmodule (!fem)"}
+  {"Displays the import table for a module"} {"!mex.imports"}
+  {"SilverSeekKB debug extension"} {"kbsearchmodules (!mex.kbs)"}
+  {"Displays modules loaded in a process"} {"!mex.mods"}
+  {"Writes a module to your temp directory"} {"!mex.writemodule"}
+  {"Show module information"} {"!WinDE.mod"}
+  {"Scan Modules for references to an address"} {"!WinDE.modref"}
+  {"All Modules"} {"lm D sm"}
+  {"Loaded Modules"} {"lmo D sm"}
+  {"Loaded Modules (verbose)"} {"lmvo D sm"}
+  {"Modules w/o symbols"} {"lme D sm"}
+  {"Save a module"} {".echo .writemem <FileName> <Range>"}
+  {"Save a module - Managed code"} {".echo !SaveModule <Base address> c:\temp\ModuleName.ext"}
+  {"Save all modules - Managed code"} {"!for_each_module .if ($spat ("${@#ImageName}","*.exe")) { !SaveModule ${@#Base} c:\temp\${@#ModuleName}.exe } .else { !SaveModule ${@#Base} c:\temp\${@#ModuleName}.dll }"}
+
+ {"Processes"}
+  {"Displays information about running tasks (processes) Kernel"} {"!mex.tasklist"}
+  {"Opens a process explorer-like UI for a kernel dump - Kernel"} {"!mex.dumpexplorer"}
+  {"Displays process running - Kernel (Public)"} {"!process 0 0"}
+  {"Displays details about process running - Kernel (Public)"} {"!process 0 7"}
+  {"Find processes with EXE names containing the given string - Kernel (Public)"} {"!process 0 0 explorer.exe"}
+  {"Switch to process - Kernel (Public)"} {".process [address from !process 0 0 output]"}
+  {"sets new process context, sets .cache forcedecodeuser, and reloads user symbols."} {".process/p /r [address]"}
+  {"Sets the context for this command, avoids the need for .process to see user stacks. Try !process 0 17"} {"!process [address] 17"}
+  {"Display information such as threads, Args to Child information - Kernel (Public)"} {"!process [address from !process 0 0 output]"}
+  {"Display information such as threads, on x64 will not show you the meaningless Args to Child information. - Kernel (Public)"} {"!process address from !process 0 0 output e"}
+  {"Displays process details"} {"!MEX.p"}
+  {"List process/thread times and handle counts, etc"} {"!WinDE.lp"}
+  {"lists all processes running on the system"} {".tlist"}
+  {"Find processes with EXE names containing the given string - Internal"} {"!WinDE.exe <Process>"}
+  {"Shortcut for .Process adr;.reload /User;!Process adr 7"} {"!WinDE.pup"}
+  {"List Zombie Processes - Process objects not in the active process list"} {"!WinDE.zp"}
+  {"An implementation of !for_each_process that supports filtering and sets the context before executing - Kernel"} {"!mex.foreachprocess(!fep)"}
+
+ {"Threads"}
+  {"List all threads - User"} {"~"}
+  {"List all threads, Start address, priority and affinity- User"} {"~*"}
+  {"List all threads and the stack- User"} {"~*k"}
+  {"List all threads and the stack backtrace- User"} {"~*kb"}
+  {"List all threads and the stack verbose- User"} {"~*kv"}
+  {"List all threads and the stack verbose with frame numbers- User"} {"~*kvn"}
+  {"Changes threads. Use Thread ID number from output such as !locks. Ex: ~~[1bd4]s - User"} {"~~[ThreadID]s"}
+
+  {"Dump and analyze the current thread - Kernel"} {"!thread"}
+  {"Dump and analyze a thread - Kernel"} {"!thread [address]"}
+  {"Dump a thread using thread ID rather than thread address. Useful when working with a critical section.  - Kernel"} {"!thread -t TID"}
+  {"Sets context for this command, avoids the need for .thread/.process for user stacks. - Kernel"} {"!thread [address] 17"}
+  {"On x64 sets context for this command, avoids the need for .thread/.process for user stacks. - Kernel"} {"!thread [address] 1e"}
+  {"Dump and analyze a thread, on x64 will not show you the meaningless Args to Child information. - Kernel"} {"!thread [address] e"}
+  {"sets new thread context, sets .cache forcedecodeuser, and reloads user symbols. - Kernel"} {".thread /p /r [address]"}
+  {"Dump and analyze a thread"} {"!WinDE.t"}
+  {"Dump and analyze a thread, with user symbols reload"} {"!WinDE.tu"}
+  {"Show tick counts for threads - Kernel"} {"!mex.listticks"}
+  {"Convert a decimal Elapsed Ticks value (e.g. from !thread) to HH:MM:SS.mmm"} {"!WinDE.ticks"}
+  {"Convert an Elapsed Ticks value in the current radix (usually hex) to HH:MM:SS."} {"!WinDE.tix"}
+  {"Display wait times for all threads in all processes"} {"!WinDE.waittime"}
+  {"List Zombie Threads - Thread objects no longer in the active process thread lists"} {"!WinDE.zt"}
+  {"Adds the stacks to the cache and displays unique ones"} {"!mex.addstack (!as)"}
+  {"Shows the current deferredready threads"} {"!mex.deferredready (!dfr)"}
+  {"Displays all the strings on the stack"} {"!mex.dumpstackstrings (!dss)"}
+  {"Displays details on threads waiting on the executive"} {"!mex.executive"}
+  {"An implementation of !for_each_frame that supports filtering and sets the context before executing Thread"} {"!mex.foreachframe (!fef)"}
+  {"Run a command against identical stacks"} {"!mex.foreachmatchingstack (!fems)"}
+  {"An implementation of .for_each_thread that works in user and kernel mode"} {"!mex.foreachthread (!fet)"}
+  {"Shows threads with a state of GateWait"} {"!mex.gatewait"}
+  {"Shows the current threads in the initialized state"} {"!mex.initialized (!init)"}
+  {"Displays a list of threads"} {"!mex.listthreads (!lt)"}
+  {"Native Dump Stack Objects"} {"!mex.ndso"}
+  {"Shows the currently ready threads"} {"!mex.ready(!rdy)"}
+  {"(Kernel mode only) A brief overview of currently executing threads"} {"!mex.running    (!cpu)"}
+  {"Searches thread stacks for a value"} {"!mex.searchthreadstacks (!sts)"}
+  {"Shows the current standby threads"} {"!mex.standby (!sby)"}
+  {"Displays details on suspended threads"} {"!mex.suspended"}
+  {"A new implementation of !thread for user & kernel mode"} {"!mex.t"}
+  {"Displays information regarding NTDLL thread pools"} {"!mex.threadpool (!tp)"}
+  {"Displays a thread report"} {"!mex.threadreport(!trep)"}
+  {"Shows the current threads in the transition state"} {"!mex.transition (!trans)"}
+  {"Like the built-in !uniqstacks except it associates thread IDs with the stack traces"} {"!mex.uniquestacks(!us)"}
+  {"Displays details on threads with a wait reason of UserRequest"} {"!mex.userrequest"}
+  {"Displays details on threads with a wait reason of WrCpuRateControl"} {"!mex.wrcpuratecontrol"}
+  {"Displays details on threads with a wait reason of WrFreePage"} {"!mex.wrfreepage"}
+  {"Displays details on LPC/ALPC server threads"} {"!mex.wrlpcreceive    (!lpcs)"}
+  {"Displays details on threads with a wait reason of WrResource"} {"!mex.wrresource"}
+  {"display thread times (user + kernel mode)"} {".ttime"}
+
+ {"Switch between 32-bit and 64-bit processes"}
+  {"Switch to 32-bit - Does not work with PSSCor/SOS"} {".effmach x86"}
+  {"Switch to 64-bit - Does not work with PSSCor/SOS"} {".effmach AMD64"}
+  {"Load the WOW64 debugger extension (wow64exts)"} {".load D:\Debuggers\winxp\wow64exts.dll"}
+  {"Switch between 32-bit and 64-bit processes - Does not work with PSSCor/SOS"} {"!wow64exts.sw"}
+  {"Changes to the WOW64 32-bit context from 64-bit kernel mode. - Kernel} {".thread /w"}
+
+ {"Stacks"}
+  {"Dumps call stack with frame numbers, easier than counting stacks for .frame"} {"kn"}
+  {"Finds kernel mode call stacks that contain the FilterString in a symbol - Kernel"} {"!stacks 2 [FilterString]"}
+  {"Sets context to specified stack frame. Provides more reliable information than .trap on x64."} {".frame /c [FrameNumber]"}
+  {"Sets context to specified stack frame. same as .frame /c, but shows registers without changing context"} {".frame /r [FrameNumber]"}
+  {"Dumps call stack starting at rbp/rip on x64. Useful when the stack is corrupt"} {"k=rbp rip FrameCount"}
+  {"Set frame length to 2000"} {".kframes 2000"}
+  {"Dump current stack w/ DML"} {"kpM 1000"}
+  {"Dump stacks without private info"} {"knL 1000"}
+  {"Dump stacks with all parameters"} {"kPn 1000"}
+  {"Dump stacks (distance from last frame)"} {"kf 1000"}
+  {"Dump stacks with Frame Pointer Omission"} {"kvn 1000"}
+  {"Dump all stack - User"} {"~*kbn 1000"}
+  {"Dump unique stacks"} {"!uniqstack -pn"}
+  {"Thread environment block"} {"!teb"}
+  {"Move to next frame"} {".f+"}
+  {"Move to previous frame"} {".f-"}
+  {"Scan stacks for exception records - User"} {"~* e s -d esp Lffff 1003f"}
+  {"Dump and analyze a thread's stack"} {"!WinDE.k"}
+  {"Dump and analyze a thread's stack, with Parameters in DML"} {"!WinDE.kp"}
+  {"Dump and analyze a thread's stack, with Parameters in DML, and user symbols reload"} {"!WinDE.kpu"}
+  {"Dump and analyze a thread's stack, with user symbols reload"} {"!WinDE.ku"}
+  {"Stack of exception thread"} {"~#kv 250"}
+  {"Stack of current thread"} {"~.kv 250"}
+
+ {"Variables"}
+  {"Dump variable info"} {".echo dt <module!function>"}
+   {"Example of Dump variable info, module = ntdll.dll, function = _PEB"} {"dt ntdll!_PEB"}
+  {"display local variables and parameters "} {"dv /i /t /V"}
+  {"display local variables and parameters and sort by Addr "} {"dv /i /t /V /a"}
+  {"display local variables and parameters and sort by name"} {"dv /i /t /V /n"}
+  {"display local variables and parameters and sort by size"} {"dv /i /t /V /z"}
+  {"display local variables and parameters for each frame"} {"!for_each_frame dv /i /t /V"}
+  {"Display nonvolatile register r12"} {"u r12"}
+  {"Display nonvolatile register r13"} {"u r13"}
+  {"Display nonvolatile register r14"} {"u r14"}
+  {"Display nonvolatile register r15"} {"u r15"}
+  {"Display nonvolatile register rdi"} {"u rdi"}
+  {"Display nonvolatile register rsi"} {"u rsi"}
+  {"Display nonvolatile register rbx"} {"u rbx"}
+  {"Display nonvolatile register rbp"} {"u rbp"}
+  {"Launches a shell process and redirects its output to the debugger. The same as .shell, but "bang bang" sounds cooler."} {"!!"}
+  {"Find a specific string in the call stack"} {".shell -ci "~*kb" FIND /I "BaseCachedThreadroutine""}
+
+ {"Pointer"}
+  {"Use with dt to dump pointers. Example: dt _EPROCESS [Address] ObjectTable->*"} {"->*"}
+
+ {"Hooked functions"}
+  {"Hooked functions"} {"!chkimg"}
+  {"Hooked functions (ntdll)"} {"!chkimg -lo 50 -d !ntdll -v"}
+  {"Hooked functions (kernel32)"} {"!chkimg -lo 50 -d !kernel32 -v"}
+  {"Hooked functions (user32)"} {"!chkimg -lo 50 -d !user32 -v"}
+  {"Hooked functions (ALL)"} {"!for_each_module !chkimg -lo 50 -d !${@#ModuleName} -v"}
+ 
+ {"Crash (a.k.a. Access Violation, BugCheck, BSOD"}
+  {"display most recent exception record"} {".exr -1"}
+  {"displays exception context record"} {".ecxr"}
+  {"Exception handlers"} {"!exchain"}
+  {"Bugcheck (Stop error or BSOD)- Kernel"} {".bugcheck"}
+  {"Bugcheck callback data (prior to Windows XP SP1)"} {"!bugdump"}
+  {"Bugcheck secondary callback data"} {".enumtag"}
+
+ {"Processor"}
+  {"CPU Info - Kernel"} {"!sysinfo cpuinfo"}
+  {"CPU Microcode - Kernel"} {"!sysinfo cpumicrocode"}
+  {"What threads are running on the CPU? - Kernel"} {"!kdexts.running"}
+  {"What threads are running on the CPU+Idle CPU's? - Kernel"} {"!kdexts.running -i"}
+  {"What threads are running on the CPU and show stacks? - Kernel"} {"!kdexts.running -t"}
+  {"What threads are running on the CPU+Idle CPU's and show stacks? - Kernel"} {"!kdexts.running -i -t"}
+  {"Dump all PCRs, and all Running and Standby threads"} {"!WinDE.pcrs"}
+  {"List Ready threads"} {"!WinDE.rdy"}
+  {"Executes a command on each processor - Kernel"} {"!mex.foreachcpu"}
+  {"Dumps the executive worker queues"} {"!exqueue"}
+  {"Dump the worker threads and the queues."} {"!exqueue 7f"}
+  {"displays the interrupt request level (IRQL) of a processor"} {"!irql [Processor]"}
+
+ {"High CPU"}
+  {"DPC queues - Kernel"} {"!dpcs"}
+  {"displays the current status of the Processor Control Region (PCR) on a specific processor - Kernel"} {"!pcr [Processor]"}
+
+  {"CPU time for User and Kernel Mode - User"} {"!runaway 7"}
+  {"CPU time for User Mode - User"} {"!runaway 1"}
+  {"CPU time for Kernel Mode - User"} {"!runaway 2"}
+  {"Dump all PCRs, and all Running and Standby threads - Kernel"} {"!WinDE.pcrs"}
+
+ {"Hangs"}
+  {"Scan processes for thread stacks relevant to hung systems"} {"!WinDE.stax"}
+  {"Hang analysis for the system - Kernel"} {"!WinDE.hang"}
+  {"Locks"} {"!ntsdexts.locks"}
+  {"Blocks - Kernel"} {"!winde.blocks"}
+  {"Qlocks - Kernel"} {"!qlocks"}
+  {"Dump FAST_MUTEX lock, and its waiter/owner threads"} {"!WinDE.fm"}
+  {"Dump KGUARDED_MUTEX lock, and its waiter/owner threads"} {"!WinDE.gm"}
+  {"Dump KGATE lock, and its waiter/owner threads"} {"!WinDE.go"}
+  {"Dump KMUTANT lock, and its waiter/owner threads"} {"!WinDE.mu"}
+  {"Dump EX_PUSH_LOCK lock"} {"!WinDE.pl"}
+  {"Dump RTL_RESOURCE lock, and its waiter/owner threads"} {"!WinDE.re"}
+  {"Dump RTL_SRWLOCK lock, and its waiter/owner threads"} {"!WinDE.rw"}
+  {"Dump Kernel SpinLock"} {"!WinDE.sl"}
+  {"Displays loader lock information"} {"!mex.loaderlock"}
+  {"Displays all loader lock information"} {"!mex.loaderlock -all"}
+
+ {"Kernel (System Process / NTOSKRNL.exe)"}
+  {"Displays executive work queue threads - Kernel"} {"!mex.wq"}
+   {"Displays everything about 'executive work queue threads' - Kernel"} {"!mex.wq -a -s -i -c -d -y -su -b -n -r -p"}
+  {"Dump nt!_ERESOURCE - Kernel"} {"dt nt!_ERESOURCE"}
+  {"Displays details for a nt!_ERESOURCE - Kernel"} {"!mex.eresource"}
+  {"Dump nt!_KEVENT - Kernel"} {"dt nt!_KEVENT"}
+  {"Show detail for a nt!_KEVENT - Kernel"} {"!mex.evt <_KEVENT Address >"}
+  {"Display information about an address Kernel"} {"!mex.addr <Address>"}
+
+ {"Disk I/O"}
+  {"Disk"} {"!scsikd.classext 0"}
+  {"Disk"} {"!scsikd.classext class_device 2"}
+  {"Displays drive info for each disk with a letter association - Kernel"} {"!mex.drives"}
+  {"Enumerates the Cluster disks on a node"} {"!WinDE.clusdsks"}
+  {"list DISK devices with queued IO, or one device's IO queue"} {"!WinDE.diskq"}
+  {"Dump an IRP, and its associated event and file object"} {"!WinDE.io"}
+  {"Shortcut for "!irpfind 0 0 userevent args"} {"!WinDE.ioe"}
+  {"List disk-related devices with stuck IO"} {"!WinDE.ioq"}
+  {"Find all active IRPs, and display IRP count statistics"} {"!WinDE.irps"}
+  {"(beta) list MPIO devices with queued IO, or one device's IO queue"} {"!WinDE.mpioq"}
+  {"Displays IRP details (replaces !irp) - Kernel"} {"!mex.mirp"}
+   {"force display of a completed IRP - Kernel"} {"!mex.mirp -f <IRP Address>"}
+   {"Displays verbose IRP details - Kernel"} {"!mex.mirp -v <IRP Address>"}
+   {"Displays IRP details - Kernel"} {"!mex.mirp <IRP Address>"}
+  {"Looks up and displays the properties of an ioctl code - Kernel"} {"!mex.ioctl <IOCTL Code>"}
+  {"Looks up and displays the properties of an ioctl name - Kernel"} {"!mex.ioctl <IOCTL Name >"}
+  {"Displays information about a device object Kernel"} {"!mex.deviceobject"}
+  {"Displays details about a driver object Kernel"} {"!mex.driverobject"}
+
+ {"File I/O"}
+  {"File cache, VACB"} {"!filecache"}
+  {"File objects for blocked thread IRPs - Find the irp"} {"!irp"}
+   {"File objects for blocked thread IRPs - Find the file object"} {"!fileobj"}
+
+  {"Searches Nonpaged pool for File objects matching search string"} {"!WinDE.findfile"}
+  {"Analyze file system information - Kernel"} {"!mex.filesystem"}
+  {"Displays information about a given file object - Kernel"} {"!mex.fileobject <address of fileobject>"}
+  {"Displays information about a given file object.  Quiet Mode (Removes all headers) - Kernel"} {"!mex.fileobject <address of fileobject> -q"}
+
+ {"Registry"}
+  {"Query the registry key for HKLM\System\CurrentControlSet\Services\TcpIp\Parameters - Kernel"} {"!reg querykey \REGISTRY\MACHINE\SYSTEM\ControlSet001\Services\Tcpip\Parameters"}
+  {"Query the registry subkey for HKLM\System\CurrentControlSet\Services\TcpIp\Parameters - Kernel"} {"!reg keyinfo <HIVE Address> <SubKey Address>"}
+  {"Show Registry key Reference counts"} {"!WinDE.regref"}
+  {"This is a DML'd version of !reg - Kernel"} {"!mex.mreg"}
+  {"This is a DML'd version of !reg, just pass the path - Kernel"} {"!mex.mreg -path <path to the registry key that you are investigating>"}
+
+ {"Network"}
+  {"Network mini ports"} {"!ndiskd.miniports"}
+  {"Network Pkt pools"} {"!ndiskd.pktpools"}
+  {"Display Information for TCPIP Interfaces on the system - Kernel"} {"!WinDE.ipconfig"}
+  {"Check the System for numerous common leak symptoms (XP and 2003) - Kernel"} {"!WinDE.leak"}
+  {"Netstat - Kernel"} {"!netstat"}
+  {"Lists TCP (dynamic/ephemeral) ports usage - Kernel"} {"!mex.tcpip -tcpports"}
+  {"Lists UDP (dynamic/ephemeral) ports usage - Kernel"} {"!mex.tcpip -udpports"}
+  {"Dump TCP Ports (XP and 2003)- Kernel"} {"!tcpip -tcpports -p"}
+  {"Dump AFD endpoints (XP and 2003)- Kernel"} {"!winDE.afdendp"}
+  {"Afd Command Help"} {"!mex.afd"}
+  {"Displays information for the DHCP server process"} {"!mex.dhcp"}
+  {"Displays the DNS client cache, and includes many other features for the DNS Client service."} {"!mex.dnsclient"}
+  {"Allows display and search of the DNS server database and cache"} {"!mex.dnsserver"}
+  {"Converts an address into an IP address format"} {"!mex.ip"}
+  {"Displays info for the Multiple UNC Provider (MUP)"} {"!mex.mup"}
+  {"Displays Network Connectivity Status Indicator (NCSI) configuration"} {"!mex.ncsi"}
+  {"Net Command Help"} {"!mex.net"}
+  {"Pingtrack command"} {"!mex.pingtrack"}
+  {"Displays the rasmans!ConnectionBlockList"} {"!mex.rasmans"}
+  {"Displays info on SRVNET"} {"!mex.srvnet"}
+  {"winnsi Command Help"} {"!mex.winnsi"}
+  {"Displays mapped drives"} {"!mex.mappeddrives"}
+  {"Looks up and displays the properties of an ioctl code - Kernel"} {"!mex.ioctl <IOCTL Code>"}
+  {"Looks up and displays the properties of an ioctl name - Kernel"} {"!mex.ioctl <IOCTL Name >"}
+
+ {"Heap Usage (Private Bytes)"}
+  {"Process heap stats and validation"} {"!heap -s -v"}
+  {"Process heap stats"} {"!heap -s"}
+  {"Dump Heaps Summary"} {"!heap -summary"}
+  {"Dump heap handle list"} {"!heap -stat"}
+  {"Dump heap a specific handle"} {"!heap -stat -h <HeapHandle>"}
+  {"Dump usage statistic for every AllocSize and all heaps"} {"!heap -stat -h 0"}
+  {"Dump heaps"} {"!heap -a"}
+  {"Will display allocations of the interesting allocation requested size"} {".echo !heap –flt s <Size>"}
+  {"analyze the individual allocations"} {".echo !heap –p –a <Allocation>"}
+  {"Check to see if Pageheap is enabled for this process"} {"!gflag"}
+  {"Check to see if Application verifier is enabled for this process"} {"!avrf"}
+  {"A DML'd version of !heap"} {"!mex.mheap"}
+
+ {"Heap corruption"}
+  {"Is pageheap on?"} {"!gflag"}
+  {"Shows information about the heap block containing <address>, even if you aren't using pageheap."} {"!heap -p -a <address>"}
+
+ {"Managed Heap Usage (Private Bytes)"}
+  {"Inspect Heap}
+   {"Shows version of GC heap (server/workstation) and how many GC heaps we have in server mode"} {"!EEVersion"}
+   {"Shows how many GC heaps there are and how much memory is taken by them"} {"!EEHeap -gc"}
+   {"Show Who rooted (bhi) the managed heap?"} {"!sosex.bhi"}
+   {"Show Who rooted (mroot) the managed heap?"} {".echo !sosex.mroot <object address>"}
+   {"Shows if Preemptive GC is enabled on a thread"} {"!Threads"}
+
+  {"INSPECT OBJECTS IN THE HEAP}
+   {"Shows all objects in the heap"} {"!dumpheap"}
+   {"Shows statistics of all objects in the heap: # of objects of a given type/Method Table, etc"} {"!DumpHeap -stat"}
+   {"Method Table"} {"!DumpHeap -mt"}
+   {"Shows all objects in the heap"} {"!Name2EE * <NameSpace.Class.Method>"}
+   {"Shows all objects in the heap"} {"!DumpHeap -type <Partial Class Name"}
+   {"Show all objects 85000 bytes in the heap"} {"!DumpHeap -min 85000"}
+   {"Shows all objects in Large Object Heap (LOH/Gen 3)"} {"!EEHeap -GC; !DumpHeap <LOH begin> <LOH allocated>"}
+   {"Shows which objects are ready for finalization and in general which objects in the heap have a Finalize method"} {"!FinalizeQueue"}
+   {"Shows all finalizable objects in Gen 0"} {"!FinalizeQueue; dd <generation 0 begin> <generation 0 end>-4"}
+   {"Shows all finalizable objects of a given Method Table/type"} {"!FinalizeQueue; !DumpHeap -mt <Method Table>"}
+   {"Useful to check if an object/class has Finalize and Dispose methods"} {"!DumpMT -md <Method Table>"}
+   {"Shows SyncBlocks and RuntimeCallableWrappers (RCW) registered for finalization"} {"!FinalizeQueue -detail"}
+   {"Shows references to an object"} {"!GCRoot <Object>"}
+   {"Shows the size of an object including its child objects"} {"!ObjSize <Object>"}
+
+ {"Virtual Memory Usage (Virtual Bytes)"}
+  {"Dump Address Summary"} {"!address -summary"}
+
+ {"Pool (Paged Pool Bytes and Nonpaged Pool Bytes)"}
+  {"List Kernel Virtual Memory"} {"!vm 1"}
+  {"Top 10 paged pool"} {"!poolused /t 10 4"}
+  {"Top 10 nonpaged pool"} {"!poolused /t 10 2"}
+  {"Find the drivers using pool tag "PTag". "} {"!for_each_module s -a @#Base @#End "PTag""}
+  {"Displays pool allocation failure statistics and reasons"} {"!WinDE.poolfailures"}
+  {"Check the System for numerous common leak symptoms"} {"!WinDE.leak"}
+  {"Scan NonPaged pool for references to an address"} {"!WinDE.poolref"}
+  {"Show the pooltag for the pool block containing an address"} {"!WinDE.pooltag"}
+  {"Find pool tag string in loaded modules"} {"!WinDE.tag"}
+  {"Searches kernel modules for a given pooltag - Kernel"} {"!mex.tag <pool tag>"}
+  {"Searches kernel modules for a given pooltag - Kernel"} {"!mex.tag -all <pool tag>"}
+  {"Searches verbose kernel modules for a given pooltag - Kernel"} {"!mex.tag -verbose <pool tag>"}
+  {"Searches a sepcific kernel modules for a given pooltag - Kernel"} {"!mex.tag -m <module name> <pool tag>"}
+  {"Displays information about a pool allocation, if it is a known pooltag we will 1. Try to run the correct extension, or 2. Just dt the structure for you - Kernel"} {"!mex.dtpool"}
+
+ {"Console apps (i.e. CMD.exe (Command promptluster))"}
+  {"Lists all instances of console host (conhost.exe)"} {"!process 0 0 conhost.exe"}
+  {"Switch process to the console host (conhost.exe) that you are interested"} {".echo .process [conhost.exe PROCESS from the !process 0 0 conhost.exe output]";.reload /User;!Process [conhost.exe PROCESS from the !process 0 0 conhost.exe output] 7"}
+  {"Displays console host (conhost.exe) info"} {"!mex.conhost"}
+
+ {"Cluster (Failover Cluster)"}
+  {"Displays ClusterCore info"} {"!mex.cluster -core"}
+  {"Displays global update manager info"} {"!mex.cluster -gumagent"}
+  {"rhs.exe instance to view"} {".echo !mex.cluster -rhs <rhsAddrParam>"}
+
+ {"LSASS"}
+  {"Displays domain information from LSASS process"} {"!mex.domaininfo"}
+  {"Displays wldap32.dll details (dll responsible for client side LDAP connections)"} {"wldap32"}
+  {"Displays LSASS's logon session details"} {"!mex.logonsession"}
+  {"Displays LSASS's logon session details"} {"!mex.lsahandletable"}
+  {"Displays LSASS's  session details"} {"!mex.lsasessions"}
+  {"Displays LSASS information"} {"!mex.lsass"}
+   {"List of all the active Kerberos credentail. Items are added to the kerberos!KerbCredentialList list each time a call to AcquireCredentialHandle for kerberos occurs"} {"!mex.lsass Kerberos Credential List"}
+   {"List of all the active negotiate packages"} {"!mex.lsass Negotiate Package List"}
+   {"Provides the domain status of this machine, and if it is a DC, we provide the list of trusts"} {"!mex.lsass Domain Information"}
+   {"List of sessions... sorry, not a lot of details"} {"!mex.lsass Session List"}
+   {"List of logon sessions"} {"!mex.lsass Logon Session List"}
+   {"The last few events for the NTDS log"} {"!mex.lsass NTDS Events"}
+   {"Displays the help for the LSAExts"} {"!mex.lsass LSAExts Commands"}
+   {"Displays information about the domain from the data stored in LSASS"} {"!mex.lsass Domain Info"}
+  {"Dumps crypt32.dll info"} {"!mex.crypt32"}
+
+ {"Logon"}
+  {"Logon hang analyzer - Complete Kernel"} {"!mex.logon"}
+  {"Logoff hang analyzer - Complete Kernel"} {"!mex.logoff"}
+  {"Displays details about Winlogon (XP/2003)"} {"winlogon"} 
+
+ {"Services"}
+  {"List SERVICES Service records"} {"!WinDE.svc"}
+  {"Find services with names containing the given string"} {"!WinDE.findsvc"}
+
+ {"Handle Usage"}
+  {"Opens a process explorer-like UI for a kernel dump - Kernel"} {"!mex.dumpexplorer"}
+  {"Check the System for numerous common leak symptoms - Kernel"} {"!WinDE.leak"}
+  {"List process/thread times and handle counts, etc - Kernel"} {"!WinDE.lp"}
+  {"Dump handles"} {"!handle"}
+  {"Dump this handle"} {".echo !handle <handle>"}
+  {"Dump this handle verbose"} {".echo !handle <handle> f"}
+  {"Dump handles verbose from a process - Kernel"} {".echo !handle 0 f <PROCESS>"}
+  {"Dump this handle verbose from a process - Kernel"} {".echo !handle <handle> f <PROCESS>"}
+  {"more details about handles - Kernel"} {"!WinDE.filedevice"}
+  {"Searches for open handles to a given object - Kernel"} {"!WinDE.findhandle"}
+  {"Statistical analysis of handles in a process"} {"!WinDE.handles"}
+  {"more details about handles"} {"!WinDE.handletype"}
+
+ {"System objects"}
+  {"Show system Objects object and handle counts - Kernel"} {"!WinDE.objects"}
+  {"Browse the Object Manager's Object Directory"} {"!WinDE.objdir"}
+  {"Displays details for a given kernel object (object manager)Kernel"} {"!mex.obj"}
+
+ {"RPC"}
+  {"Local Procedure Call (LPC) - Kernel"} {"!lpc <message>"}
+  {"Asynchronous Local Procedure Call (ALPC) chain for suspected threads - Kernel"} {"!alpc /m"}
+  {"Asynchronous Procedure Calls (APC)  - Kernel"} {"!apc"}
+  {"List LPC server threads and connections waiting - Kernel"} {"!WinDE.lpcwait"}
+  {"Show client information for an RPC message - Kernel"} {"!WinDE.rpc"}
+
+ {"WMI (Windows Management Instrumentation/WBEM)"}
+  {"WMI / WINMGMT related commands"} {"!mex.wmi"}
+
+ {"WinRM (Windows Remote Management"}
+  {"WinRM / wsmsvc related commands"} {"!mex.winrm"}
+
+ {"SMB"}
+  {"Scan Server Work Queues for active threads and queued work items - Kernel} {!WinDE.svq"}
+  {"Show information about the SRV Work Queues and allocated work items - Kernel"} {"!WinDE.lswn"}
+  {"List Server service Endpoints - Kernel"} {"!WinDE.srvendp"}
+  {"List Server service Files - Kernel"} {"!WinDE.srvfiles"}
+  {"List Server service Sessions - Kernel"} {"!WinDE.srvsess"}
+  {"List Server service Shares - Kernel"} {"!WinDE.srvshare"}
+  {"List Server service Tree connections - Kernel"} {"!WinDE.srvtrees"}
+  {"Scan Workstation Work Queues for active threads and queued work items - Kernel"} {"!WinDE.wsq"}
+  {"Displays the list of IRPs stored in rdbss!RxIrpsList - Kernel"} {"!mex.rxirps"}
+  {"List Active RX Contexts"} {"!fskd.arxc"}
+
+ {"Critical Section"}
+  {"Dump locks and look for Critical Sections. (!ntsdexts.locks)"} {"!ntsdexts.locks"}
+  {"Dump Critical Sections, owners, and threads waiting on them (!critsec)"} {"!critsec <critical section address>"}
+  {"Dump Critical Sections, owners, and threads waiting on them (!cs)"} {"!cs <critical section address>"}
+  {"Dump type Critical Sections, owners, and threads waiting on them (RTL_CRITICAL_SECTION)"} {"dt RTL_CRITICAL_SECTION <critical section address>"}
+  {"List Critical Sections, owners, and threads waiting on them"} {"!WinDE.critlist"}
+  {"Critical sections for suspected processes"} {"!cs -l -o -s"}
+
+ {"Minifilter I/O"}
+  {"Coming soon"} {"Coming soon"}
+
+ {"Memory"}
+  {"Dump Virtual Memory Summary - Kernel"} {"!vm 1"}
+  {"Memory usage information - Kernel"} {"!mex.mem"}
+  {"Check the System for numerous common leak symptoms"} {"!WinDE.leak"}
+  {"Dump Address Summary"} {"!address -summary"}
+  {"Dump Heaps Summary"} {"!heap -summary"}
+  {"Dump heaps"} {"!heap -a"}
+  {"Dump virtual memory protection info"} {"!vprot <address>"}
+  {"Dump name of the file containing given Addr "} {"!mapped_file <address>"}
+
+ {"Event Log"}
+  {"Dump event log - Internal"} {"!WinDE.evtlog"}
+  {"Dump event log - Public"} {"!wmitrace.strdump"}
+
+ {"Print Spooler"}
+  {"List SPOOLSV Spooler/Printer/Driver/Port/Monitor/Job status"} {"!WinDE.spl"}
+  {"Dump a Spooler structure based on its embedded signature"} {"!WinDE.spltype"}
+
+ {"Clipboard"}
+  {"Dump clipboard contentsKernel"} {"!mex.clipboard"}
+
+ {"Remote Desktop/Terminal Server/Citrix"}
+  {"Lists all of the user session IDs. A quick way to list the active sessions from a dump of a terminal server."} {"!session"}
+  {"Changes the current session context to SessionID. Useful when looking at GDI, or other per session data."} {"!session -s SessionID"}
+  {"session processes"} {"!sprocess"}
+  {"Displays the desktops for the Windows Stations - Kernel"} {"!mex.desktop"}
+  {"Display details for windows station(s) - Kernel"} {"!mex.windowstation"}
+   {"Displays windows for each desktop by adress. You must be in the context of a given session to see that session's windows - Kernel"} {"!mex.window -d <Desktop Addr>"}
+   {"Displays windows for each desktop by thread id. You must be in the context of a given session to see that session's windows - Kernel"} {"!mex.window -tid <Thread ID>"}
+   {"Displays windows for each desktop by window address. You must be in the context of a given session to see that session's windows - Kernel"} {"!mex.window <Window Address>"}
+  {"Display details for sessions Kernel"} {"!mex.session"}
+  {"Scan Remote Desktop Work Queues for active threads and queued work items"} {"!WinDE.rdq"}
+  {"Dumps Session View Space for the current session"} {"!WinDE.sessionview"}
+  {"Dump window surfaces to a directory - Kernel"} {"!mex.dumpwindowsurfaces c:\temp\images"}
+
+ {"Watson"}
+  {"Find AeDebug Debugger process, and debug its parent"} {"!WinDE.watson"}
+
+ {"Shutdown"}
+  {"List shutdown-related data in WINLOGON"} {"!WinDE.shutdown"}
+
+ {"Security"}
+  {"Check for RootKit-style hooked system services"} {"!WinDE.rootkit"}
+
+ {"Memory Explore (Explore Memory)"}
+  {"Potential values of a single bit flip"} {".echo !winDE.bits -a <address>"}
+  {"Dump all ASCII strings"} {".echo s –sa initialAddress finalAddress"}
+  {"Dump all Unicode strings that matches"} {".echo s –sa initialAddress finalAddress"}
+  {"Get just the address where the strings that match the argument are located"} {".echo s –[1]a initialAddress finalAddress "stringToSearchFor" "}
+  {"Displaying all ASCII strings from the current call stack"} {"s -sa poi(@$teb+0x8) poi(@$teb+0x4)"}
+  {"Displaying all UNICODE strings from the current call stack"} {"s -su poi(@$teb+0x8) poi(@$teb+0x4)"}
+  {"Displaying all occurrences ASCII strings that appear within the process virtual memory"} {"s –sa 0 0FFFFFFF"}
+  {"Searching for a specific ASCII string in the current call stack"} {".echos -a poi(@$teb+0x8) poi(@$teb+0x4) "<StringBeingSearched>" "}
+  {"Searching for a specific DWORD in the current call stack"} {"s -d poi(@$teb+0x8) poi(@$teb+0x4) 7783b7ee"}
+
+ {"Memory Edit (Edit or Modify Memory)"}
+  {"Assembles instruction mnemonics and puts the resulting instruction codes into memory"} {".echo a [address]"}
+  {"<Address> [Values]"} {".echo e <Address> [Values]"}
+  {"<Address> [Values] and combinations"} {".echo e{b|d|D|f|p|q|w}"}
+  {"<Address> <"String">"} {".echo e{a|u|za|zu}"}
+
+ {"Disassembling (Unassembles)"}
+  {"disassembled starting at a location prior to your address."} {"ub"}
+  {"disassembled starting at a location prior to your address, specifies to go up to 20 instructions back. ub l20"} {"ub l20"}
+  {"disassembled code that comes before eip"} {"ub @eip L8"}
+  {"disassemble the eip register"} {"u @eip"}
+  {"Dumps the assembly for Function (name or address). Useful for optimized code that is not contiguous in memory."} {"uf <Function>"}
+  {"Shows all of the calls made by Function (can be function name or address)"} {"uf /c <Function>"}
+  {"disassemble the entire function"} {"uf @eip"}
+  {"disassemble the calls made by this function"} {"uf /c @eip"}
+  {"Creates linked callee names from the same function"} {"uf /D @eip"}
+  {"Sorts the output by address"} {"uf /o @eip"}
+  {"Creates linked call lines for accessing call information and creating breakpoints"} {"uf /O @eip"}
+  {"Displays the number of instructions in a routine"} {"uf /i @eip"}
+
+ {"Managed"}
+  {"Load sos"} {".loadby sos mscorwks"}
+  {"clrstack"} {"!clrstack"}
+  {"Threads"} {"!threads"}
+  {"Stack Objects"} {"!dso"}
+  {"Exceptions"} {"!dae"}
+
+ {"Volume Shadow Copy (VSS)"}
+  {"Vss Command Help Kernel"} {"!mex.vss"}
+   {"list all shadow copies"} {"!mex.vss -snapshots"}
+   {"List all volsnap worker threads"} {"!mex.vss -threads  "}
+   {"Dump volsnap registry settings"} {"!mex.vss -configuration"}
+  {"Display volume shadow copy information"} {"!WinDE.vss"}
+
+ {"Graphics/Video"}
+  {"Displays the desktops for the Windows Stations Kernel"} {"!mex.desktop"}
+  {"Display details for windows station(s) - Kernel"} {"!mex.windowstation"}
+   {"Displays windows for each desktop by adress. You must be in the context of a given session to see that session's windows - Kernel"} {"!mex.window -d <Desktop Addr>"}
+   {"Displays windows for each desktop by thread id. You must be in the context of a given session to see that session's windows - Kernel"} {"!mex.window -tid <Thread ID>"}
+   {"Displays windows for each desktop by window address. You must be in the context of a given session to see that session's windows - Kernel"} {"!mex.window <Window Address>"}
+  {"Dumps GDIHandleCount and UserHandleCount for each process"} {"!WinDE.gdihandle"}
+  {"Displays message queue - Kernel"} {"!mex.messagequeue -s <Address>"}
+  {"will only show inbound window message queue - Kernel"} {"!mex.messagequeue -out <Address>"}
+  {"will only show outbound window message queue - Kernel"} {"!mex.messagequeue -in <Address>"}
+  {"address of a window message queue - Kernel"} {"!mex.messagequeue <Address>"}
+
+ {"Power"}
+  {"System Power Policy"} {"!popolicy"}
+  {"System Current Power information"} {"!poaction"}
+
+ {"VB6"}
+  {"Break on VB6 runtime errors"} {"bm /a MSVBVM60!EbRaiseException*"}
+
+ {"Security Commands"}
+  {"Load MSSec's Exploitables} {".load MSEC.Dll"}
+  {"Update MSSec's Exploitables"}
+   {"Check for (and update to) the latest version"} {"!MSEC.update"}
+
+ {"WINDE Commands"}
+  {"Load WINDE} {".load WINDE"}
+  {"Update WinDE"}
+   {"Check for (and update to) the latest version"} {"!WinDE.update"}
+
+ {"MEX Commands"}
+  {"Load MEX"} {".load MEX"}
+  {"Update MEX"}
+   {"Check for (and update to) the latest version"} {"!MEX.update"}
+  {"Mex Settings"} {"!MEX.settings"}
+  {"Preface a broken command with this one to open an email and send it to the Mex team (e.g. !fixthis !otherMexCommandThatDidNotWork Mex"} {"!MEX.fixthis"}
+
+ {"Utilities"}
+  {"Dumps user mode atom table"} {"!mex.atom"}
+  {"Beeps"} {"!mex.beep"}
+  {"Displays binary information located at the given address"} {"!mex.bin"}
+  {"Executes a command with all possible values of a single bit flip"} {"!mex.bits2(!b2)"}
+  {"Replaces the built in breakpoint list (bl) command with DML'd version"} {"!mex.bl"}
+  {"Replaces the built in breakpoint (bp) command with a DML'd version"} {"!mex.bp"}
+  {"Cache the output of a command to replay later"} {"!mex.cache (!c)"}
+  {"Gets/Sets text on the clipboard, or enable/disable clipboard access"} {"!mex.clipboard2"}
+  {"Displays the comments for the dump"} {"!mex.comment"}
+  {"Computer Name Command Help"} {"!mex.computername (!cn)"}
+  {"Counts the number of lines returned by a command"} {"!mex.count"}
+  {"Filters output, removing unwanted areas"} {"!mex.cut"}
+  {"Displays an ANSI string"} {"!mex.da"}
+  {"Wrapper for dt that adds some DML"} {"!mex.ddt"}
+  {"Displays a Unicode string"} {"!mex.du"}
+  {"Display dump information"} {"!mex.dumpinfo (!di)"}
+  {"Time Information"} {"!mex.dumptime"}
+  {"Runs a series of commands. Use this instead of using semicolons"} {"!mex.exec"}
+  {"Fixes stacks in an ADPlus log"} {"!mex.fixadplus(!fadp)"}
+  {"Iterates through a list, executing a command for each item."} {"!mex.foreachitem (!fei)"}
+  {"Runs a command against every line of data  foreachline"} {"!mex.(!fel)"}
+  {"Trace value to origin"} {"!mex.goodoldtimes(!got)"}
+  {"Search the output of a command for a specific string or pattern"} {"!mex.grep"}
+  {"Gets the tick count from the shared memory area of an iDNA trace"} {"!mex.gtc"}
+  {"Displays the first X lines of a command's output"} {"!mex.head"}
+  {"Highlights the specified text using the specified options (alias: !hilight)"} {"!mex.hilite (!hl)"}
+  {"Displays compact iDNA position for note taking"} {"!mex.idna(!i)"}
+  {"Condition detection based on command output"} {"!mex.if(!mif)"}
+  {"Jumps to the load timestamp of a given module in an IDNA trace"} {"!mex.jumptoload(!jtl)"}
+  {"Loops either forwards or backwards through a series of numbers with variable replacement"} {"!mex.loop"}
+  {"Runs a command in paged mode, asking for input every X lines"} {"!mex.more"}
+  {"Interprets a Windows message "} {"!mex.mrmsg (!msg)"}
+  {"Outlines the calls inside a given function"} {"!mex.outline(!ol)"}
+  {"Allow to execute debugger commands and to process results with powershell"} {"!mex.psh"}
+  {"Detects whether any public symbols have been loaded for Microsoft binaries "} {"!mex.publicsymbolcreep"}
+  {"Read a file from the filesystem and display the output in the debugger"} {"!mex.readfile"}
+  {"Takes an input value and rolls it up to the appropriate bucket (e.g. bytes to GB)"} {"!mex.rollup (!ru)"}
+  {"Sort command"} {"!mex.sort"}
+  {"Prints out readable strings in an address range"} {"!mex.strings"}
+  {"Sums the output returned by a command"} {"!mex.sum (!sum)"}
+
+ {"PSSCOR2 Commands"}
+  {"Load PSSCOR2 and SOSEX"} {".load SOSEX;.load PSSCOR2"}
+  {"Modules"}
+   {"All Modules"} {"lm D sm"}
+   {"Loaded Modules"} {"lmo D sm"}
+   {"Loaded Modules (verbose)"} {"lmvo D sm"}
+   {"Modules w/o symbols"} {"lme D sm"}
+  {"Threads"}
+   {"Managed Threads"} {"!threads"}
+   {"Native Threads"} {"~"}
+   {"Thread Pool Threads"} {"!threadpool"}
+   {"Sync Block Deadlocks"} {"!dlk"}
+  {"Stacks"}
+   {"Current Managed Stack"} {"!clrstack"}
+   {"Current Managed Stack Parameters and Locals"} {"!vars -w"}
+   {"Current Native Stack"} {"kP"}
+   {"Current Dump Stack"} {"!dumpstack"}
+   {"All Managed Stacks"} {"~*e!clrstack"}
+   {"All Managed Stack Parameters and Locals"} {"~*e!vars -w"}
+   {"All Native Stacks"} {"~*kP"}
+   {"All Dump Stacks"} {"!eestack"}
+   {"Current Stack DSO"} {"!dso"}
+   {"All Stacks DSO"} {"~*e!dso"}
+  {"Minidump Analysis"}
+   {"PSSCOR2 Analysis"} {"!analysis"}
+   {"!analyze -v"} {"!analyze -v"}
+  {"Memory"}
+   {"Stack Objects"} {"!dso"}
+   {"GC Heap"} {"!eeheap -gc"}
+   {"Heap Stats"} {"!dumpheap -stat"}
+   {"Heap Stats (Unrooted objects)"} {"!heapstat -iu"}
+   {"Objects > 500 bytes"} {"!dumpheap -min 500"}
+   {"Objects > 1000 bytes"} {"!dumpheap -min 1000"}
+   {"Gen 2 Objects"} {"!dumpheap -stat -gen 2"}
+
+  {"PSSCOR2 only commands"}
+   {"Thread State"} {"!psscor2.ThreadState"}
+   {"Dump Sig Elem"} {"!psscor2.DumpSigElem"}
+   {"RCW Cleanup List"} {"!psscor2.RCWCleanupList"}
+   {"Dump IL"} {"!psscor2.DumpIL"}
+   {"Dump Assembly"} {"!psscor2.DumpAssembly"}
+
+  {"Undocumented PSSCOR2 commands"}
+   {"Find Interesting Strings"} {"!FindInterestingStrings"}
+   {"Save Snapshot"} {"!SaveSnapshot"}
+   {"Load Snapshot"} {"!LoadSnapshot"}
+   {"dump config"} {"!dumpconfig"}
+   {"GC Usage"} {"!GCUsage"}
+   {"Verify DAC"} {"!VerifyDAC"}
+
+ {"PSSCOR4 Commands"}
+  {"Load PSSCOR4 and SOSEX"} {".load SOSEX;.load PSSCOR4"}
+  {"Modules"}
+   {"All Modules"} {"lm D sm"}
+   {"Loaded Modules"} {"lmo D sm"}
+   {"Loaded Modules (verbose)"} {"lmvo D sm"}
+   {"Modules w/o symbols"} {"lme D sm"}
+  {"Threads"}
+   {"Managed Threads"} {"!threads"}
+   {"Native Threads"} {"~"}
+   {"Thread Pool Threads"} {"!threadpool"}
+   {"Sync Block Deadlocks"} {"!dlk"}
+  {"Stacks"}
+   {"Current Managed Stack"} {"!clrstack"}
+   {"Current Managed Stack Parameters and Locals"} {"!vars -w"}
+   {"Current Native Stack"} {"kP"}
+   {"Current Dump Stack"} {"!dumpstack"}
+   {"All Managed Stacks"} {"~*e!clrstack"}
+   {"All Managed Stack Parameters and Locals"} {"~*e!vars -w"}
+   {"All Native Stacks"} {"~*kP"}
+   {"All Dump Stacks"} {"!eestack"}
+   {"Current Stack DSO"} {"!dso"}
+   {"All Stacks DSO"} {"~*e!dso"}
+  {"Minidump Analysis"}
+   {"PSSCOR4 Analysis"} {"!analysis"}
+   {"!analyze -v"} {"!analyze -v"}
+  {"Memory"}
+   {"Stack Objects"} {"!dso"}
+   {"GC Heap"} {"!eeheap -gc"}
+   {"Heap Stats"} {"!dumpheap -stat"}
+   {"Heap Stats (Unrooted objects)"} {"!heapstat -iu"}
+   {"Objects > 500 bytes"} {"!dumpheap -min 500"}
+   {"Objects > 1000 bytes"} {"!dumpheap -min 1000"}
+   {"Gen 2 Objects"} {"!dumpheap -stat -gen 2"}
+
+  {"PSSCOR4 only commands"}
+   {"DumpAllExceptions (dae)"} {"!psscor4.DumpAllExceptions"}
+   {"DumpThreadConfig (dtc)"} {"!psscor4.DumpThreadConfig"}
+   {"DumpMethodSig (sam)"} {"!psscor4.DumpMethodSig"}
+   {"SaveAllModules"} {"!psscor4.SaveAllModules"}
+   {"HistStats"} {"!psscor4.HistStats"}
+
+  {"Undocumented PSSCOR4 commands"}
+   {"Command used by sos to set break-points on methods that have not yet being jitted. Without this, sos will not be able to set break-points on function names using !bpmd ,that have not yet jitted."} {"!HandleCLRN"}
+
+ {"Decompile"}
+  {"Prints all available code analysis checklists"} {"!mex.codescope"}
+  {"Decompile and print psuedo-C# source code for the given [MemberName]"} {"!mex.decompilemember"}
+  {"Decompile and print psuedo-C# source code for the given [TypeName]"} {"!mex.decompiletype"}
+  {"Prints the IL for the specified method"} {"!mex.Decompile"}
+  {"Prints the assembly manifest for the specified module"} {"!mex.printmanifest"}
+  {"Scans specified module and type [Module!TypeName] and prints all members"} {"!mex.printmembers"}
+  {"Scans specified [Module] and prints all types"} {"!mex.printtypes"}
+  {"runs the specified check(s) on the specified module(s)"} {"!mex.runcheck (!runchecks)"}
+  {"runs the specified checklist(s) on the specified module(s)"} {"!mex.runchecklist"}
+  {"Executes the SharePoint Dispose and Do Not Dispose Checklist items"} {"!mex.spdisposecheck"}
+  {"Scans all loaded managed modules and finds methods that call [MethodName]"} {"!mex.whocalls"}
+  {"Scans all loaded managed modules and finds types that implement [InterfaceName]"} {"!mex.whoimplements"}
+  {"Scans all loaded managed modules and finds types that inherit [TypeName]"} {"!mex.whoinherits"}
+  {"Scans all loaded managed modules and finds methods that construct [TypeName]"} {"!mex.whonews"}
+  {"Scans managed modules and all finds methods that pin objects of a given [TypeName] or all types"} {"!mex.whopins"}
+
+ {"DotNet"}
+  {"Display the ASP.NET Cache (!aspnetcache)"} {"!mex.aspnetcache"}
+  {"Get the ASP.Net performance counters (!AspxCounters)"} {"!mex.aspnetperfcounters"}
+  {"Displays ASP.NET Threading Settings (IIS 7.X Integrated Mode only)"} {"!mex.aspnetthreadsettings"}
+  {"Like !aspxpages, but more powerful"} {"!mex.aspxpagesext"}
+  {"Get the CLR performance counters (!clrperf)"} {"!mex.clrperfcounters"}
+  {"Prints the stack trace of a managed thread (!clrstack2)"} {"!mex.clrstack2"}
+  {"Displays available CLR versions  (!cordll)"} {"!mex.cordll"}
+  {"Replacement for !dae (!DumpAllExceptions)"} {"!mex.dae"}
+  {"Displays information about objects referenced by delegates (!drefs)"} {"!mex.delegaterefs"}
+  {"Display a managed object structure (!do2)"} {"!mex.displayobj"}
+  {"Prints information on ASP.NET InProc Sessions"} {"!mex.dumpaspnetsession"}
+  {"Dumps a list of all DataSet objects"} {"!mex.dumpdataset"}
+  {"Like !DumpDynamicAssemblies, but better (!dda2)"} {"!mex.dumpdynamicassemblies2"}
+  {"Dumps the HttpRuntime objects on the heap"} {"!mex.dumphttpruntime2"}
+  {"Dumps information about a WCF buffered message (!wcfmsg)"} {"!mex.dumpwcfmessage"}
+  {"Displays information about finalizable objects in the GC Heap (!finalizable)"} {"!mex.finalizable"}
+  {"Runs a command against each CLR object (!feo)"} {"!mex.foreachobject"}
+  {"Displays information on GC Handles (!gchandle)"} {"!mex.gchandleinfo"}
+  {"Get info on the managed GC Heap (!gchi)"} {"!mex.gcheapinfo"}
+  {"Print the contents of an HttpHeaderCollection"} {"!mex.httpheaders"}
+  {"Automatically extracts the module from the dump, and launches ILSpy"} {"!mex.ilspy"}
+  {"A !threads look-alike, with !aspxpagexext-like output (!mthreads)"} {"!mex.managedthreads"}
+  {"Outputs object analysis summary"} {"!mex.objectsummary"}
+  {"Display System.Data.OracleClient performance counters"} {"!mex.oracleclientperfcounters"}
+  {"Prints information about a DBCommand object"} {"!mex.printdbcommand"}
+  {"Like !PrintException, with DML (!pe2)"} {"!mex.printexception2"}
+  {"Display System.Data.SqlClient performance counters"} {"!mex.sqlclientperfcounters"}
+  {"Provides an overview of ADO.NET connections to SQL Server"} {"!mex.sqlcn"}
+  {"Gets the local and remote TCP ports from a SqlConnection object (!sqlports)"} {"!mex.sqlports"}
+  {"Display static fields of a managed type"} {"!mex.staticfields"}
+  {"Find threads executing WCF services (!svcthreads)"} {"!mex.svcthreads"}
+  {"Analyzes the System.Threading.Tasks.Task objects still on the heap. (!tasks)"} {"!mex.tasktriage"}
+
+ {"Dynamics"}
+
+ {"Excel"}
+  {"Analyzes Excel session and displays debug information. (!xla)"} {"!mex.xlanalyze"}
+  {"Displays information about open workbooks. (!xlb)"} {"!mex.xlbooks"}
+  {"Displays information about the Visual Basic Environment (VBE)."} {"!mex.xlvbe"}
+  {"Displays information about open windows. (!xlw)"} {"!mex.xlwindows"}
+
+ {"Exchange"}
+  {"Fixes source path for common Exchange symbols Exchange fixexchangesource (!fes)"}
+
+ {"Internet Explorer (IE)"}
+  {"This function will dump mshtml!CAttrArray object from current address (!_maa)"} {"!mex.cattrarray"}
+  {"This function will list mshtml!CDoc objects for current dump (!_mcdocs)"} {"!mex.cdocs"}
+  {"This function will dump mshtml!CElement object from address parameter (!_mce)"} {"!mex.celement"}
+  {"This function will dump urlmon!CInetHttp object from current address (!_uci)"} {"!mex.cinethttp"}
+  {"This function will dump jscript!COleScript object from current address (!_jscole)"} {"!mex.colescript"}
+  {"This function will dump mshtml!CXMLHttpRequest object from address parameter (!_mxmlreq)"} {"!mex.cxmlhttprequest"}
+  {"This function will dump mshtml!CElement object from address (!_mdce)"} {"!mex.dumpcelement"}
+  {"This function will dump jscript Garbage Collector Alloc from current address (!_jsgca)"} {"!mex.dumpgcalloc"}
+  {"This function will dump all IE objects found when parsing all threads from current dump (!_wdies)"} {"!mex.dumpiestacks"}
+  {"This function will dump all JScript Garbage Collector from current dump (!_jdgc)"} {"!mex.dumpjscriptgc"}
+  {"This function will dump all JScript functions found with the related callstack from current dump (!_jdjss)"} {"!mex.dumpjscriptstacks"}
+  {"This function will dump Mshtml!CMarkup object from address (!_mdm)"} {"!mex.dumpmarkup"}
+  {"This function will dump all JScript functions found with the related callstack from current dump (!_wdps)"} {"!mex.dumpproxystacks"}
+  {"This function will dump jscript!CScriptBody object from current address (!_jscsb)"} {"!mex.dumpscriptbody"}
+  {"This function will dump jscript!RuntimeScriptException object from current address (!_jsdse)"} {"!mex.dumpscriptexception"}
+  {"This function will dump jscript!CScriptRuntime object from current address (!_jscsr)"} {"!mex.dumpscriptruntime"}
+  {"This function will dump mshtml!CTreeNode object from address (!_mdtn)"} {"!mex.dumptreenode"}
+  {"This function will dump jscript9!Js::FunctionBody object from current address (!_jsfb)"} {"!mex.functionbody"}
+  {"This function will dump jscript9!Js::FunctionInfo object from current address (!_jsfi)"} {"!mex.functioninfo"}
+  {"This function will dump jscript9!Js::JavascriptFunction object from current address (!_jsfct)"} {"!mex.javascriptfunction"}
+  {"This function will dump jscript globals for current dump (!_jscriptg)"} {"!mex.jscriptglobals"}
+  {"This function will dump jscript!CSession object from current address (!_jscss)"} {"!mex.jscsession"}
+  {"This function will dump mshtml globals for current dump (!_mshtmlg)"} {"!mex.mshtmlglobals"}
+  {"This function will list mshtml!THREADSTATE objects for current dump (!_mcdoc)"} {"!mex.mshtmlthreadstates"}
+  {"This function will list mshtml!CWindow objects for current dump (!_mcwnd)"} {"!mex.mshtmlwindows"}
+  {"This function will dump jscript!NameList object from current address (!_jsnl)"} {"!mex.namelist"}
+  {"This function will dump jscript!NameTbl object from current address (!_jsnt)"} {"!mex.nametbl"}
+  {"This function will dump wininet!PROXY_INFO object from current address (!_wpi)"} {"!mex.proxyinfo"}
+  {"This function will dump wininet WininetProxyManager object from current address (!_wpm)"} {"!mex.proxymanager"}
+  {"This function will dump jscript!ScrFncObj object from current address (!_jssfo)"} {"!mex.scrfncobj"}
+  {"This function will dump wininet!CServerInfo list for current dump (!_wsi)"} {" !mex.serverinfo"}
+  {"This function will dump jscript9!Js::FunctionBody::SourceInfo object from current address (!_jssi)"} {"!mex.sourceinfo"}
+  {"This function will dump urlmon globals for current dump (!_urlmong)"} {"mex.urlmonglobals"}
+  {"This function will dump urlmon Security zones for current dump (!_wsz)"} {"!mex.urlmonzones"}
+  {"This function will dump wininet!AddrInfo object from current address (!_wai)"} {"!mex.wininetaddrinfo"}
+  {"This function will dump cookies informations for current dump (!_wcook)"} {"!mex.wininetcookies"}
+  {"This function will dump wininet DNS cache for current dump (!_wdns)"} {"!mex.wininetdnscache"}
+  {"This function will dump wininet globals for current dump (!_wg)"} {"!mex.wininetglobals"}
+  {"This function will dump wininet!INTERNET_HANDLE_OBJECT list for current dump (!_wh)"} {"!mex.wininethandles"}
+  {"This function will dump wininet!ICSocket Keep-Alive list from current address (!_wka)"} {"!mex.wininetkeepalive"}
+  {"This function will dump wininet!HTTP_REQUEST_HANDLE_OBJECT list for current dump (!_wreq)"} {"!mex.wininetrequests"}
+  {"This function will dump zones mappings informations for current dump (!_wzm)"} {"!mex.zonemappings"}
+
+ {"MAPI"}
+  {"Dumps a COlkConnectionHTTP object (!ohttp)"} {"!mex.colkconnectionhttp"}
+  {"Dumps a COlkConnectionRPC object (!orpc)"} {"!mex.colkconnectionrpc"}
+  {"Dumps a CROPPipeline"} {"!mex.croppipeline"}
+  {"Dumps a CROPRequest"} {"!mex.croprequest"}
+  {"Dumps a CROPTask"} {"!mex.croptask"}
+  {"Interprets a dispid"} {"!mex.dispid"}
+  {"Interprets an ABP"} {"!mex.dumpabp"}
+  {"Dumps an emsmdb32!CCnctConnProvHTTP object (!dccph)"} {"!mex.dumpccnctconnprovhttp"}
+  {"Dumps an emsmdb32!CNCT object (!cnct)"} {"!mex.dumpcnct"}
+  {"Dumps Outlook's connection list from OLMAPI32!g_pCurrentConnectionManager (!dc)"} {"!mex.dumpconnections"}
+  {"Dump Exchange Connections (!dec)"} {"!mex.dumpexchangeconnections"}
+  {"Dumps an emsmdb32!CExchangeServerConnection object (!desc)"} {"!mex.dumpexchangeserverconnection"}
+  {"Interprets MAPI memory allocated using MAPIAllocateBuffer/MAPIAllocateMore (!dmm)"} {"!mex.dumpmapimemory"}
+  {"Dumps an SPropValue at the given address"} {"!mex.dumpprop"}
+  {"Dumps an array of SPropValue at the given address"} {"!mex.dumpprops"}
+  {"Dumps a chain of lstprov objects"} {"!mex.dumpproviders"}
+  {"Dumps an SRestriction at the given address (!dumprestriction)"} {"!mex.dumpres"}
+  {"Dumps one SRow value at the given address"} {"!mex.dumprow"}
+  {"Dumps SRows at the given address (!dumprowset)"} {"!mex.dumprows"}
+  {"Finds MAPI RPCs using olmapi32!g_ServerReqMgrList"} {"!mex.dumprpcs"}
+  {"Dumps the open MAPI sessions from pinst_MAPIX (!pmapix)"} {"!mex.dumpsessions"}
+  {"Dumps an SSortOrderSet at the given address"} {"!mex.dumpsort"}
+  {"Dumps SUBMITTER_REC records"} {"!mex.dumpsubmitters"}
+  {"Dumps a pstprx32!Microsoft::System::String" (!systemstring)} {"!mex.dumpsystemstring"}
+  {"Dumps a tag array at the given address" (!dumptags)} {"!mex.dumptagarray"}
+  {"Dumps SERVER_REQ_TASK_REC records"} {"!mex.dumptasks"}
+  {"Interprets an error code"} {"!mex.err"}
+  {"Dumps a FILETIME at the given address (!ft)"} {"!mex.filetime"}
+  {"Finds all COlkConnectionHTTP objects in memory (potentially slow) (!fohttp)"} {"!mex.findohttp"}
+  {"Finds all COlkConnectionRPC objects in memory (potentially slow) (!forpc)"} {"!mex.findorpc"}
+  {"Finds all CROPPipeline objects in memory (potentially slow) (!fpl)"} {"!mex.findpipelines"}
+  {"Finds PSTs (!findpst)"} {"!mex.findpst"}
+  {"Finds all emsmdb32!UNKOBJ objects in memory (potentially slow) (!fuo)"} {"!mex.findunkobj"}
+  {"Interprets flags for a given property tag (!Flags)"} {"!mex.flags"}
+  {"Dumps a folder which inherits from emsmdb32!FOLDOBJ"} {"!mex.foldobj"}
+  {"Dumps a GUID at the given address"} {"!mex.guid"}
+  {"Dumps the MAPI idle queue (!iq)"} {"!mex.idlequeue"}
+  {"Dumps an object which inherits from emsmdb32!LOGONOBJ"} {"!mex.logonobj"}
+  {"Dumps a MAPI object"} {"!mex.mapistruct"}
+  {"Dumps a message store which inherits from MSPST32!MS (!ms)"} {"!mex.ms"}
+  {"Dumps a message which inherits from emsmdb32!MSGOBJ"} {"!mex.msgobj"}
+  {"Dumps a folder which inherits from emsmdb32!MSPRVDROBJ"} {"!mex.msprvdrobj"}
+  {"Dumps the named prop table list from olmapi32!s_rgNamedPropTable (!np)"} {"!mex.namedprop"}
+  {"Dumps a named prop table derived from olmapi32!NamedPropMapTableEntry (!npt)"} {"!mex.namedproptable"}
+  {"Dumps an MSPST32!NDB object  (!ndb)"} {"!mex.ndb"}
+  {"Dumps a NOTIFICATION object (!notif)"} {"!mex.notification"}
+  {"Dumps an array of NOTIFICATION objects (!notifs)"} {"!mex.notifications"}
+  {"Dumps a message which inherits from emsmdb32!NOTIFYOBJ"} {"!mex.notifyobj"}
+  {"Interprets an OBJT"} {"!mex.objt"}
+  {"Dumps an object which inherits from MSPST32!OBJ"} {"!mex.pstobj"}
+  {"Interprets a property tag (!proptag)"} {"!mex.ptag"}
+  {"Dumps the recent error queue from olmapi32!g_RecentErrInfo (!re)"} {"!mex.recenterror"}
+  {"Dumps a message which inherits from emsmdb32!RNOTF"} {"!mex.rnotf"}
+  {"Interprets a ROP"} {"!mex.rop"}
+  {"Interprets an rtime value"} {"!mex.rtime"}
+  {"Dumps a folder which inherits from emsmdb32!TABLEOBJ"} {"!mex.tableobj"}
+  {"Interprets an UNKOBJ"} {"!mex.unkobj"}
+
+ {"MSO"}
+  {"Dumps the addin list from mso!g_pAddInsX"} {"!mex.dumpaddins"}
+  {"Dumps the mso!CSharedLock object for the current thread (!dsl)"} {"!mex.dumpsharedlock"}
+  {"Fixes source path for common Office symbols (!fos)"} {"!mex.fixofficesource"}
+  {"Displays detailed information about an object which inherits from mso!CMsoOLDocBase"} {"!mex.msodoc"}
+  {"Dumps the Office Licensing information from mso!vplic (!officelicense)"} {"!mex.olic"}
+
+ {"Outlook"}
+  {"Enable or disable AutoDiscover tracing output for Outlook"} {"!mex.autod"}
+  {"Dumps an object which inherits from outlook!BaseItem"} {"!mex.baseitem"}
+  {"Dumps Outlook's deferred call queue (!dq)"} {"!mex.deferredqueue"}
+  {"Dumps Outlook's adapter list from OLMAPI32!g_pCurrentConnectionManager"} {"!mex.dumpadapters"}
+  {"Dumps an object which inherits from AttachmentCol (!dac)"} {"!mex.dumpattachmentcol"}
+  {"Dumps an object which inherits from AttachmentObject (!dao)"} {"!mex.dumpattachmentobject"}
+  {"Dumps an CMsoContactInfo object (!dci)"} {" !mex.dumpcontactinfo"}
+  {"Dumps the chain of context links of type outlook!OMContextLink (!dcl)"} {"!mex.dumpcontextlinks"}
+  {"Dumps Exchange sync status from OUTLOOK!ThreadSafeSingleton<COlkCEProgressData>::s_instance (!desb)"} {"!mex.dumpexchangestatusbar"}
+  {"Dumps a RGFLDDI array of FieldDrawInfo structures (!dfdi)"} {"!mex.dumpfielddrawinfo"}
+  {"Outputs an outlook!FolderTreeItem or outlook!ScopeItem (!dfti)"} {"!mex.dumpfoldertreeitem"}
+  {"Dumps the name check sessions (Nickname cache) from OUTLOOK!CDll::s_NameCheckSessionList (!dncs)"} {"!mex.dumpnamechecksessions"}
+  {"Dumps an CMsoPersona object"} {"!mex.dumppersona"}
+  {"Dumps a RGPFI array of PrintFieldInfo structures (!dpfi)"} {"!mex.dumpprintfieldinfo"}
+  {"Dumps an RgPdisp structure (!dpdc)"} {"!mex.dumppropdefcollection"}
+  {"Dumps the reminder dialog from OUTLOOK!g_pReminder (!drd)"} {"!mex.dumpreminderdialog"}
+  {"Dumps the reminder queue from OUTLOOK!ReminderQueue::s_pReminderQueue (!drq)"} {"!mex.dumpreminderqueue"}
+  {"Dumps an object which inherits from RenItem (!dri)"} {"!mex.dumprenitem"}
+  {"Dumps Outlook wrapper contexts from outlook!OMPerTypeList<OMWrapperContext>::s_pHead (!dwc)"} {"!mex.dumpwrappercontexts"}
+  {"Finds all ApptInfo objects (!fai)"} {"!mex.findapptinfo"}
+  {"Finds all outlook!BaseItem objects on the stack (!fsbi)"} {"!mex.findstackbaseitems"}
+  {"Finds all MNSFolder objects on the stack (!fsf)"} {"!mex.findstackfolders"}
+  {"Finds all outlook!RenItem objects on the stack (!fsri)"} {"!mex.findstackrenitems"}
+  {"Dumps an Outlook GenericArray (!ga)"} {"!mex.genericarray"}
+  {"Enable or Disable HTTP tracing output for Outlook"} {"!mex.httptrace"}
+  {"Dumps an object which inherits from MNSFolder"} {"!mex.mnsfolder"}
+  {"Basic Outlook/MAPI dump analysis (!ola)"} {"!mex.olanalyze"}
+  {"Dumps the command line parameters from OUTLOOK!g_psoclCmdLine (!olglobals)"} {"!mex.olcmd"}
+  {"Dumps an object which inherits from PropSet"} {"!mex.propset"}
+  {"Dumps Outlook's Running Object Table (ROT)"} {"!mex.rot"}
+  {"Enable or Disable RPC tracing output for Outlook"} {"!mex.rpctrace"}
+  {"Dumps an SPIRenItem object"} {"!mex.spirenitem"}
+
+ {"Powershell"}
+  {"Outputs the Powershell Variables of the currently running script on the current thread"} {"!mex.dumppsvariables"}
+  {"Outputs the commands, cmdlets, etc. found on the current thread including those referenced by other objects on the thread."} {"!mex.dumpstackpscommands"}
+  {"Outputs the PSObjects found on the current thread including those referenced by other objects on the thread."} {"!mex.dumpstackpsobjects"}
+  {"Outputs the runspaces in the process."} {"!mex.psrunspace"}
+  {"Outputs the script blocks in the process."} {"!mex.psscriptblock"}
+
+ {"Remote Desktop Server (RDS)"}
+
+ {"Search"}
+  {"Bings for something"} {"!mex.bing"}
+  {"Queries Bugcheck (!b)"} {"!mex.bugcheck"}
+  {"Queries StackOverflow (!so)"} {"!mex.stackoverflow"}
+  {"Queries Wolfram Alpha (!wa)"} {"!mex.wolfram"}
+
+ {"System Center"}
+  {"Adds the source code path (.srcpath+) for a System Center or MDOP application based on the EXE name and file version SystemCenter (!fscs)"} {"!mex.fixscsource"}
+  {"SCCM"} {"!mex.sccm"}
+  {"Utilities for SC Operations Manager.(!om)"} {"!mex.scom"}
+  {"Utilities for SC Service Manager (!sm)"} {"!mex.scsm"}
+  {"Utilities WSUS"} {"!mex.wsus"}
+
+ {"VB"}
+  {"Dumps information about a vbscript!CScriptBody object"} {"!mex.cscriptbody"}
+  {"Dumps a VARIANT at the given address"} {"!mex.dumpvar  (!dumpvt)"}
+  {"Dumps information about a vbscript!FncInfo object"} {"!mex.fncinfo"}
+  {"Displays detailed information about a VBA project (vbe7!ProjItem)"} {"!mex.vbaproj"}
+  {"Displays detailed information about vbscript running on the current thread (!vbs)"} {"!mex.vbscript"}
+
+ {"Word"}
+  {"Displays Word-specific information (open documents, active document, last fetch, etc.)"} {"!mex. wdanalyze"}
+  {"Displays detailed information about a particular document which inherits from wwlib!DOD (!doc)"} {"!mex.wddoc"}
+  {"Finds currently opened Word documents and templates using wwlib!vpdodUser (!docs)"} {"!mex.wddocs"}
+  {"Displays information about global flags"} {"!mex.wdflags"}
+  {"Displays detailed information about open files"} {"!mex.wdfn"}
+  {"Displays information about last fetch"} {"!mex.wdt"}
+
+ {"Live Debug"}
+  {"Launch windbg with domain account. Use when dbg computer isn't in domain and symbol server is"} {".echo runas /netonly /u:<account> windbg.exe"}
+  {"Break on write access only. Replace size with the num bytes you want to watch. Ex: ba w 4 005d5f10"} {"ba w size [address]"}
+  {"Enables an exception which will break into the debugger when module.dll is loaded."} {"sxe ld:module.dll"}
+  {"Make the process active and break into the debugger. Use in live kernel debugs to get into process context"} {".process -i <address>"}
+  {"Trace calls until they return to the current address. More useful with -or to get return values. Use -l for depth."} {"wt"}
+  {"Steps through until the next 'ret' instruction. Similar to gu, but pt stops on the ret and gu stops after the ret."} {"pt"}
+  {"Steps through until the next 'call' instruction. Combine with other commands to find who returned your error> pc;p;r eax"} {"pc"}
+  {"Go until the current function returns.  Effectively this unwinds one stack frame."} {"gu"}
+  {"If you run 'p' and hit a breakpoint, gc takes you where p would have gone if you had not hit the bp."} {"gc"}
+  {"Sets a kernel mode breakpoint that only triggers when hit in the context of this process."} {"bp /p EProcess"}
+  {"Sets a kernel mode breakpoint that only triggers when hit in the context of this thread."} {"bp /t EThread"}
+
+ {"Live Debug Managed code"}
+  {"putting a break point on managed generic functions"}
+   {"Use method descriptors with bpmd instead"} {"!bpmd -md <method descriptor address>"}
+   {"This will list all the modules in all application domains (most applications have only one appdomain)"} {"!dumpdomain"}
+   {"Take the module name where your type exists and read the module address"} {"!dumpmodule –mt <module address>"}
+   {"This will list the types in the module. Now pick up your types address"} {"!dumpmt –md <type address>"}
+   {"This will list all the method descriptor addresses of your type and this is what we need to put a break point"} {"!bpmd –md <method descriptor address>"}
